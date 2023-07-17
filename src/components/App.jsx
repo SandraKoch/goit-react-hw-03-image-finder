@@ -1,16 +1,14 @@
+import { ImageGallery } from './ImageGallery';
+import { Searchbar } from './Searchbar';
+import React, { useState } from 'react';
+
 export const App = () => {
+  const [images, setImages] = useState([]);
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div>
+      <Searchbar onSearched={images => setImages(images)} />
+      <ImageGallery images={images} />
     </div>
   );
 };
