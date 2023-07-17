@@ -1,4 +1,5 @@
 import { ImageGallery } from './ImageGallery';
+import { Modal } from './Modal';
 import { Searchbar } from './Searchbar';
 import React, { useState } from 'react';
 
