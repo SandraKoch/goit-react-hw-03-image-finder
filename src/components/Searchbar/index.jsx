@@ -3,11 +3,18 @@ import { Component } from 'react';
 import css from './Searchbar.module.css';
 import debounce from 'lodash.debounce';
 import { fetchImages } from 'api/fetchImages';
+import { Loader } from 'components/Loader';
 
 export class Searchbar extends Component {
+  state = {
+    loading: false,
+  };
+
   debouncedQueryChange = debounce(async query => {
+    this.setState({ loading: true });
     const fetchedData = await fetchImages(query);
-    console.log('didUpdate', fetchedData);
+    // console.log('didUpdate', fetchedData);
+    this.setState({ loading: false });
 
     const images = fetchedData.hits;
     this.props.onSearched(images);
@@ -36,6 +43,7 @@ export class Searchbar extends Component {
             onChange={this.handleQueryChange}
           />
         </form>
+        <Loader visible={this.state.loading} />
       </header>
     );
   }
