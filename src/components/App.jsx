@@ -1,53 +1,60 @@
 import { Button } from './Button';
 import { ImageGallery } from './ImageGallery';
-// import { Modal } from './Modal';
 import { Searchbar } from './Searchbar';
 import React, { useState } from 'react';
+import { fetchImages } from 'api/fetchImages';
+import { Loader } from './Loader';
 
 export const App = () => {
-  // fetch start
-  const API_KEY = '36788203-2c78e2a924ca1cc7e222b7ed9';
-  const PAGE = 1;
-  const PER_PAGE = 12;
-  const BASE_URL = 'https://pixabay.com/api/';
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState('');
+  const [loadMoreVisible, setLoadMoreVisible] = useState(false);
 
-  const fetchImages = async inputSearch => {
-    const params = new URLSearchParams({
-      q: inputSearch,
-      page: PAGE,
-      key: API_KEY,
-      image_type: 'photo',
-      orientation: 'horizontal',
-      per_page: PER_PAGE,
-    });
-    try {
-      const response = await fetch(`${BASE_URL}?${params}`);
+  const searchImages = async query => {
+    setLoading(true);
+    setQuery(query);
+    setPage(1);
 
-      if (!response.ok) {
-        throw new Error('Network response has failed');
-      }
+    const newPage = 1;
+    const fetchedData = await fetchImages(query, newPage);
+    setLoading(false);
+    console.log(fetchedData);
+    const nextImages = fetchedData.hits;
+    setImages(nextImages);
 
-      const data = await response.json();
-      console.log(data.hits);
-      return data;
-    } catch (error) {
-      console.log(error);
+    if (fetchedData.totalHits > nextImages.length) {
+      setLoadMoreVisible(true);
     }
   };
 
-  // fetch end
-  const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
+  const loadMoreFn = async () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    setLoading(true);
+    setLoadMoreVisible(false);
+    const fetchedData = await fetchImages(query, nextPage);
+    const moreImages = fetchedData.hits;
+    setLoading(false);
 
-  const loadMoreFn = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    const nextImages = [...images, ...moreImages];
+    setImages(nextImages);
+    console.log('loadMore', nextImages);
+
+    if (fetchedData.totalHits > nextImages.length) {
+      setLoadMoreVisible(true);
+    } else {
+      setLoadMoreVisible(false);
+    }
   };
 
   return (
     <div>
-      <Searchbar onSearched={images => setImages(images)} />
+      <Searchbar onSearch={query => searchImages(query)} />
       <ImageGallery images={images} />
-      <Button isVisible={false} onClick={loadMoreFn} />
+      <Loader visible={loading} />
+      {loadMoreVisible && <Button onClick={loadMoreFn} />}
     </div>
   );
 };

@@ -8,7 +8,7 @@ export class Button extends Component {
         <button
           className={css.button}
           type="button"
-          onClick={this.props.loadMoreFn}
+          onClick={this.props.onClick}
         >
           Load more
         </button>
