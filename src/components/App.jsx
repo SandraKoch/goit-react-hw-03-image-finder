@@ -20,7 +20,7 @@ export const App = () => {
     const newPage = 1;
     const fetchedData = await fetchImages(query, newPage);
     setLoading(false);
-    console.log(fetchedData);
+    // console.log(fetchedData);
     const nextImages = fetchedData.hits;
     setImages(nextImages);
 
@@ -40,7 +40,6 @@ export const App = () => {
 
     const nextImages = [...images, ...moreImages];
     setImages(nextImages);
-    console.log('loadMore', nextImages);
 
     if (fetchedData.totalHits > nextImages.length) {
       setLoadMoreVisible(true);

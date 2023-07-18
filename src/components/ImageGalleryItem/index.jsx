@@ -8,7 +8,6 @@ export class ImageGalleryItem extends Component {
   };
 
   openModalFn = () => {
-    console.log('openmodal');
     this.setState({ isOpened: true });
   };
 

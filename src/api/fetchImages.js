@@ -19,7 +19,7 @@ export const fetchImages = async (inputSearch, page) => {
     }
 
     const data = await response.json();
-    console.log(data.hits);
+    // console.log(data.hits);
     return data;
   } catch (error) {
     console.log(error);
