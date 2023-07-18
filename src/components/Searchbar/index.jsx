@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import css from './Searchbar.module.css';
 import debounce from 'lodash.debounce';
+import background from 'loupe.png';
 
 export class Searchbar extends Component {
   debouncedQueryChange = debounce(query => {
@@ -15,7 +16,12 @@ export class Searchbar extends Component {
     return (
       <header className={css.searchbar}>
         <form className={css.searchform}>
-          <button type="submit" className={css.button} disabled>
+          <button
+            type="submit"
+            className={css.button}
+            disabled
+            style={{ backgroundImage: `url(${background})` }}
+          >
             <span className={css.buttonLabel}>Search</span>
           </button>
 
