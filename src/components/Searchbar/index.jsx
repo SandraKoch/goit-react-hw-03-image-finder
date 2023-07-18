@@ -15,7 +15,7 @@ export class Searchbar extends Component {
     return (
       <header className={css.searchbar}>
         <form className={css.searchform}>
-          <button type="submit" className={css.button}>
+          <button type="submit" className={css.button} disabled>
             <span className={css.buttonLabel}>Search</span>
           </button>
 
